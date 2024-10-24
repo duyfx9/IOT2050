@@ -19,7 +19,7 @@ TCP/IP4 -> Using the following IP Address
 IP Address: 192.168.200.100
 Subnet Mask: 255.255.255.0
 Using Putty, open SSH connect 192.168.200.1 port 22  
-Default password and username are "root"  
+Default password and username are 'root'  
 After that, type "sudo apt update" and "sudo apt upgrade"  
 Type "iot2050setup"
 Networking -> enO1 -> Edit -> 192.168.1.10  
