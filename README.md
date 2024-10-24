@@ -47,3 +47,5 @@ In the Terminal of IOT2050: "mosquitto_sub -h <IOT2050_IP> -p 1883 -t test/topic
 In another PC or Terminal: "mosquitto_pub -h <IOT2050_IP> -p 1883 -t test/topic -m "Hello, MQTT!""  
 Enjoy!  
 # Setting up ESP32  
+No thing specical here, you can use any example in internet to public data using ESP32, but i have some tip if you catch the bug    
+When connect ESP32 to the same network layer but ESP32 cant public data, try to using 127.0.0.1 port 1883  
