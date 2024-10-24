@@ -12,8 +12,14 @@ Flash this image to SD card (>16GB) using any flash software (I using rusfus), n
 Plug SD card to IOT2050, power up  
 ## Setting up MQTT broker in IOT2050:
 Plug the LAN wire to XP1 (Port LAN1) connect form IOT2050 to PC  
+In PC, go Control Panel -> Network and Internet -> Network Connections
+Click in Ethernet connection -> Properties
+TCP/IP4 -> Using the following IP Address
+IP Address: 192.168.200.100
+Subnet Mask: 255.255.255.0
 Using Putty, open SSH connect 192.168.200.1 port 22  
 Default password and username are "root"  
 After that, type "sudo apt update" and "sudo apt upgrade"  
+
 
 
