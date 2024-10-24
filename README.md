@@ -11,9 +11,9 @@ Extract .zip and we will get .wic file
 Flash this image to SD card (>16GB) using any flash software (I using rusfus), no special setting  
 Plug SD card to IOT2050, power up  
 ## Setting up MQTT broker in IOT2050:
-Plug the LAN wire to XP1 (Port LAN1) connect form IOT2050 to PC
-Using Putty, open SSH connect 192.168.200.1 port 22
-Default password and username are "root"
-After that, type "sudo apt update" and "sudo apt upgrade"
+Plug the LAN wire to XP1 (Port LAN1) connect form IOT2050 to PC  
+Using Putty, open SSH connect 192.168.200.1 port 22  
+Default password and username are "root"  
+After that, type "sudo apt update" and "sudo apt upgrade"  
 
 
