@@ -11,6 +11,7 @@ Extract .zip and we will get .wic file
 Flash this image to SD card (>16GB) using any flash software (I using rusfus), no special setting  
 Plug SD card to IOT2050, power up  
 ## Setting up MQTT broker in IOT2050:
+### Setting Network
 Plug the LAN wire to XP1 (Port LAN1) connect form IOT2050 to PC  
 In PC, go Control Panel -> Network and Internet -> Network Connections
 Click in Ethernet connection -> Properties
@@ -27,7 +28,21 @@ Click in Ethernet connection -> Properties
 TCP/IP4 -> Using the following IP Address
 IP Address: 192.168.1.100
 Subnet Mask: 255.255.255.0
+### Setting MQTT Broker
 Check the Status of Mosquitto: "sudo systemctl status mosquitto"
 Check the Port Mosquitto is Listening On: "sudo netstat -tuln | grep mosquitto" or "sudo ss -tuln | grep 1883"
-
-
+If the Teminal show :
+tcp   LISTEN 0      100             127.0.0.1:1883      0.0.0.0:*  
+tcp   LISTEN 0      100                 [::1]:1883         [::]:*  
+That mean Mosquitto is listening on the loopback address (localhost) at port 1883
+In that case, go to config file of Mosquitto : sudo nano /etc/mosquitto/mosquitto.conf
+Add "listener 1883 0.0.0.0" and "allow_anonymous true" in the config file
+Check again
+If Terminal say
+tcp   LISTEN 0      100               0.0.0.0:1883      0.0.0.0:*
+You are success !!!
+### Test the MQTT connection
+In IOT2050: "hostname -I"
+In the Terminal of IOT2050: "mosquitto_sub -h <IOT2050_IP> -p 1883 -t test/topic"
+In another PC or Terminal: "mosquitto_pub -h <IOT2050_IP> -p 1883 -t test/topic -m "Hello, MQTT!""
+Enjoy!
