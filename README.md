@@ -40,9 +40,9 @@ Add "listener 1883 0.0.0.0" and "allow_anonymous true" in the config file
 Check again  
 If Terminal say  
 tcp   LISTEN 0      100               0.0.0.0:1883      0.0.0.0:*  
-You are success !!!
-### Test the MQTT connection
-In IOT2050: "hostname -I"
-In the Terminal of IOT2050: "mosquitto_sub -h <IOT2050_IP> -p 1883 -t test/topic"
-In another PC or Terminal: "mosquitto_pub -h <IOT2050_IP> -p 1883 -t test/topic -m "Hello, MQTT!""
-Enjoy!
+You are success !!!  
+### Test the MQTT connection  
+In IOT2050: "hostname -I"  
+In the Terminal of IOT2050: "mosquitto_sub -h <IOT2050_IP> -p 1883 -t test/topic"  
+In another PC or Terminal: "mosquitto_pub -h <IOT2050_IP> -p 1883 -t test/topic -m "Hello, MQTT!""  
+Enjoy!  
