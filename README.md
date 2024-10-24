@@ -22,24 +22,24 @@ Using Putty, open SSH connect 192.168.200.1 port 22
 Default password and username are "root"  
 After that, type "sudo apt update" and "sudo apt upgrade"  
 Type "iot2050setup"
-Networking -> enO1 -> Edit -> 192.168.1.10
-In PC, go Control Panel -> Network and Internet -> Network Connections
-Click in Ethernet connection -> Properties
-TCP/IP4 -> Using the following IP Address
-IP Address: 192.168.1.100
-Subnet Mask: 255.255.255.0
-### Setting MQTT Broker
-Check the Status of Mosquitto: "sudo systemctl status mosquitto"
-Check the Port Mosquitto is Listening On: "sudo netstat -tuln | grep mosquitto" or "sudo ss -tuln | grep 1883"
-If the Teminal show :
-tcp   LISTEN 0      100             127.0.0.1:1883      0.0.0.0:*  
-tcp   LISTEN 0      100                 [::1]:1883         [::]:*  
-That mean Mosquitto is listening on the loopback address (localhost) at port 1883
-In that case, go to config file of Mosquitto : sudo nano /etc/mosquitto/mosquitto.conf
-Add "listener 1883 0.0.0.0" and "allow_anonymous true" in the config file
-Check again
-If Terminal say
-tcp   LISTEN 0      100               0.0.0.0:1883      0.0.0.0:*
+Networking -> enO1 -> Edit -> 192.168.1.10  
+In PC, go Control Panel -> Network and Internet -> Network Connections  
+Click in Ethernet connection -> Properties  
+TCP/IP4 -> Using the following IP Address  
+IP Address: 192.168.1.100  
+Subnet Mask: 255.255.255.0  
+### Setting MQTT Broker  
+Check the Status of Mosquitto: "sudo systemctl status mosquitto"  
+Check the Port Mosquitto is Listening On: "sudo netstat -tuln | grep mosquitto" or "sudo ss -tuln | grep 1883"  
+If the Teminal show :  
+tcp   LISTEN 0      100             127.0.0.1:1883      0.0.0.0:*    
+tcp   LISTEN 0      100                 [::1]:1883         [::]:*    
+That mean Mosquitto is listening on the loopback address (localhost) at port 1883  
+In that case, go to config file of Mosquitto : sudo nano /etc/mosquitto/mosquitto.conf  
+Add "listener 1883 0.0.0.0" and "allow_anonymous true" in the config file  
+Check again  
+If Terminal say  
+tcp   LISTEN 0      100               0.0.0.0:1883      0.0.0.0:*  
 You are success !!!
 ### Test the MQTT connection
 In IOT2050: "hostname -I"
