@@ -46,3 +46,4 @@ In IOT2050: "hostname -I"
 In the Terminal of IOT2050: "mosquitto_sub -h <IOT2050_IP> -p 1883 -t test/topic"  
 In another PC or Terminal: "mosquitto_pub -h <IOT2050_IP> -p 1883 -t test/topic -m "Hello, MQTT!""  
 Enjoy!  
+# Setting up ESP32  
