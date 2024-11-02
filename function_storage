@@ -1,0 +1,13 @@
+let messages = context.get('messages') || [];
+
+// Thêm tin nhắn mới với ký tự xuống dòng
+if (msg.payload) {
+    messages.push(msg.payload + "\n"); // Thêm newline sau mỗi tin nhắn
+}
+
+// Lưu lại vào context
+context.set('messages', messages);
+
+// Gửi lại toàn bộ tin nhắn
+msg.payload = messages.join(''); // Nối tất cả tin nhắn thành một chuỗi
+return msg;
