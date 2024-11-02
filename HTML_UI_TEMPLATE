@@ -1,0 +1,6 @@
+<div>
+    <h2>Front Door Security</h2> <!-- Header -->
+    <div style="white-space: pre-wrap;">
+        <p ng-bind="msg.payload"></p>
+    </div>
+</div>
