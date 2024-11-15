@@ -2,34 +2,38 @@
 #include <PubSubClient.h>
 #include <SPI.h>
 #include <MFRC522.h>
+#include "time.h"
 
 // Wi-Fi and MQTT credentials
-const char* ssid = "HCMUT03";
-const char* password = "123456789";
-const char* mqttServer = "192.168.54.94";
+const char* ssid = "PIF_CLUB";
+const char* password = "chinsochin";
+const char* mqttServer = "192.168.10.3";
 const int mqttPort = 1883;
 
-// Define RC522 pins
 #define SS_PIN  5   // GPIO5 for SDA (SS)
 #define RST_PIN 4   // GPIO4 for RST
-
-// Initialize RFID object
 MFRC522 rfid(SS_PIN, RST_PIN);
 
-// Initialize WiFi and MQTT client objects
 WiFiClient espClient;
 PubSubClient client(espClient);
 
-// Variables
-String assignedID = "c11191d";
-String personName = "Nguyen Van A";
+struct CardInfo {
+  String uid;
+  String name;
+};
 
-// Predefined date and time
-String date1 = "2/11/2024";
-String time1 = "10:22 AM";
+CardInfo validCards[] = {
+  {"C111091D", "Nguyen Van A"},
+  {"F5052BE2", "Tran Van B"},
+  {"11223344", "Card 3"}
+};
 
-// Wi-Fi and MQTT connection setup
+const char* ntpServer = "pool.ntp.org";
+const long  gmtOffset_sec = 7 * 3600;  // GMT+7
+const int   daylightOffset_sec = 0;
+
 void setup() {
+  configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
   Serial.begin(115200);
   SPI.begin();
   rfid.PCD_Init();
@@ -60,28 +64,55 @@ void setup() {
   }
 }
 
+void printLocalTime() {
+  struct tm timeinfo;
+  if (!getLocalTime(&timeinfo)) {
+    Serial.println("Failed to obtain time");
+    return;
+  }
+  Serial.print("Date: ");
+  Serial.printf("%02d-%02d-%04d", timeinfo.tm_mday, timeinfo.tm_mon + 1, timeinfo.tm_year + 1900);
+  Serial.print(" Time: ");
+  Serial.printf("%02d:%02d:%02d", timeinfo.tm_hour, timeinfo.tm_min, timeinfo.tm_sec);
+  Serial.println();
+}
+
 void loop() {
   client.loop();
 
-  // Check if RFID card is present
   if (!rfid.PICC_IsNewCardPresent() || !rfid.PICC_ReadCardSerial()) {
+    delay(50);
     return;
   }
 
-  // Get the UID from the card
-  String cardID = "";
+  String cardUid = "";
   for (byte i = 0; i < rfid.uid.size; i++) {
-    cardID += String(rfid.uid.uidByte[i], HEX);
+    cardUid += String(rfid.uid.uidByte[i] < 0x10 ? "0" : "");
+    cardUid += String(rfid.uid.uidByte[i], HEX);
   }
-  Serial.print("Card ID: ");
-  Serial.println(cardID);
+  cardUid.toUpperCase();
 
-  // Check if the card ID matches the assigned ID
-  if (cardID == assignedID) {
-    // Format message
-    String message = "ID: " + assignedID + " - Name: " + personName + " - Date: " + date1 + " - Time: " + time1;
+  // Find if card UID exists in validCards array
+  String cardName = "Thẻ không hợp lệ";
+  for (int i = 0; i < sizeof(validCards) / sizeof(validCards[0]); i++) {
+    if (validCards[i].uid == cardUid) {
+      cardName = validCards[i].name;
+      break;
+    }
+  }
 
-    // Publish message to MQTT
+  Serial.print("ID: ");
+  Serial.println(cardUid);
+  Serial.print("Name: ");
+  Serial.println(cardName);
+
+  // Get local time
+  struct tm timeinfo;
+  if (getLocalTime(&timeinfo)) {
+    char timeStr[30];
+    strftime(timeStr, sizeof(timeStr), "%d/%m/%Y %H:%M:%S", &timeinfo);
+    String message = "ID: " + cardUid + " - Name: " + cardName + " - Date: " + timeStr;
+
     if (client.publish("esp32/rfid/log", message.c_str())) {
       Serial.println("Message sent: " + message);
     } else {
@@ -89,10 +120,7 @@ void loop() {
     }
   }
 
-  // Halt the reading process for a bit to avoid duplicates
   delay(2000);
-
-  // Halt further operations on the card
   rfid.PICC_HaltA();
   rfid.PCD_StopCrypto1();
 }
