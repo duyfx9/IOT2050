@@ -10,8 +10,8 @@ const char* password = "chinsochin";
 const char* mqttServer = "192.168.10.3";
 const int mqttPort = 1883;
 
-#define SS_PIN  5   // GPIO5 for SDA (SS)
-#define RST_PIN 4   // GPIO4 for RST
+#define SS_PIN  4   // GPIO4 for SDA (SS)
+#define RST_PIN 15   // GPIO15 for RST
 MFRC522 rfid(SS_PIN, RST_PIN);
 
 WiFiClient espClient;
